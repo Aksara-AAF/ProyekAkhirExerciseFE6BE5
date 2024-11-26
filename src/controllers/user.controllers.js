@@ -21,6 +21,7 @@ exports.register = async (req, res) => {
         const user = await User.findOne({username: username});
         if (user != null){
             res.status(201).json({success: false, message: "Username is already used"});
+            return {success: false, message: "Username is already used"};
         }else{
             const saltt = parseInt(process.env.salt);
             const hashed = await bcrypt.hash(password, saltt);
@@ -34,7 +35,7 @@ exports.register = async (req, res) => {
             });
 
             res.status(201).json({success: true, message: "Successfully created user", data: new_user, token: token});
-            return {success: true, data: user, token: token};
+            return {success: true,  message: "Successfully created user", data: new_user, token: token};
         }
     }catch (error){
         res.status(500).json({success: false, message: error.message});
@@ -51,8 +52,8 @@ exports.login = async (req, res) => {
             return {success: false, message: "username tidak ada!"};
         }else{
             if (npm.trim() != user.npm){
-                res.status(201).json({success: false, message: "npm-mu salah"});
-                return {success: false, message: "npm-mu salah"};
+                res.status(201).json({success: false, message: "npm-mu salah!"});
+                return {success: false, message: "npm-mu salah!"};
             }
 
             const is_correct = await bcrypt.compare(password, user.password);
@@ -67,8 +68,8 @@ exports.login = async (req, res) => {
                 res.status(201).json({success: true, message: "Successfully logged in", data: user, token: token});
                 return {success: true, message: "Successfully logged in", data: user, token: token};
             }else{
-                res.status(201).json({success: false, message: "incorrect password!"});
-                return {success: false, message: "incorrect password!"};
+                res.status(201).json({success: false, message: "passwordmu salah!"});
+                return {success: false, message: "passwordmu salah!"};
             }
         }
     }catch(err){

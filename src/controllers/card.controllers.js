@@ -23,7 +23,7 @@ exports.postCard = async (req, res) => {
         }, time);
 
         res.status(201).json({success: true, message: "Successfully posted card", data: new_card});
-        return {success: true, data: new_card};
+        return {success: true, message: "Successfully posted card", data: new_card};
     }catch (error){
         console.log(error.message);
         res.status(500).json({success: false, message: error.message});
@@ -57,7 +57,7 @@ exports.updateCard = async (req, res) => {
         card.status = status;
         await card.save();
         res.status(201).json({success: true, message: "Successfully updated the card", data: card});
-        return {success: true, data: card};
+        return {success: true, message: "Successfully updated the card", data: card};
     }catch (err){
         res.status(500).json({success: false, message: err.message});
     }
@@ -76,10 +76,11 @@ exports.deleteCard = async (req, res) => {
 
 exports.getCards = async (req, res) => {
     try{
-        const cards = Card.find();
+        const cards = await Card.find();
         res.status(201).json({succes: true, message: "Successfully retrieved all cards", cards: cards});
-        return {success: true, cards: cards};
+        return {success: true, message: "Successfully retrieved all cards", cards: cards};
     }catch (err){
+        console.log(err.message);
         res.status(500).json({success: false, message: err.message});
     }
 }
