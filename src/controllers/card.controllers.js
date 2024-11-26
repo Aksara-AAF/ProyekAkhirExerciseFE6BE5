@@ -8,10 +8,16 @@ exports.postCard = async (req, res) => {
         const new_card = await new Card({username: userr.username, permintaan: message, title: title});
         await new_card.save();
         let time = new_card.expiresIn;
-        if (time_limit){
-            time = time_limit;
+        if (new_card.expiresIn){
+            if (new_card.expiresIn[new_card.expiresIn.length - 1] == 'm'){
+                time = 1000*60*Number(new_card.expiresIn.substring(0, new_card.expiresIn.length - 1));
+            }else if (new_card.expiresIn[new_card.expiresIn.length - 1] == 'h'){
+                time = 1000*60*60*Number(new_card.expiresIn.substring(0, new_card.expiresIn.length - 1));
+            }else if (new_card.expiresIn[new_card.expiresIn.length - 1] == 'd'){
+                time = 1000*60*60*24*Number(new_card.expiresIn.substring(0, new_card.expiresIn.length - 1));
+            }
         }
-
+        
         setTimeout(async () => {
             await Card.findByIdAndDelete(new_card.id);
         }, time);

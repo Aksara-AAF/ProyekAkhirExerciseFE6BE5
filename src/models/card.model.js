@@ -23,9 +23,9 @@ const CardSchema = new mongoose.Schema({
     },
 
     expiresIn: {
-        type: Number,
+        type: String,
         required: true,
-        default: 60000
+        default: "1d"
     }
 });
 
