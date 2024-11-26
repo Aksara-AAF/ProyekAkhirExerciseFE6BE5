@@ -8,7 +8,8 @@ const CardSchema = new mongoose.Schema({
 
     title: {
         type: String,
-        required: true
+        required: true,
+        default: "Card title"
     },
 
     permintaan: {
