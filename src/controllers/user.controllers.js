@@ -82,9 +82,10 @@ exports.get_my_info = async (req, res) => {
         const u_id = req.user;
         const user = await User.findById(u_id.id);
         
-        return res.json({success: true, message: "Successfully retrieved user info", data: user});
+        res.status(201).json({success: true, message: "Successfully retrieved user info", data: user});
+        return {success: true, message: "Successfully retrieved user info", data: user};
     }catch(err){
-        return res.json({success: false, message: err.message});
+        return {success: false, message: err.message};
     }
 }
 

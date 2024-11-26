@@ -22,11 +22,44 @@ exports.postCard = async (req, res) => {
             await Card.findByIdAndDelete(new_card.id);
         }, time);
 
-        res.status(201).json({success: true, data: new_card});
+        res.status(201).json({success: true, message: "Successfully posted card", data: new_card});
         return {success: true, data: new_card};
     }catch (error){
         console.log(error.message);
         res.status(500).json({success: false, message: error.message});
+    }
+}
+
+exports.getMyCards = async (req, res) => {
+    try{
+        const userr = req.user;
+        const user = await User.findById(userr.id);
+        const cards = await Card.find({ username: user.username });
+        if (cards.length === 0){
+            res.status(201).json({success: false, message: "You currently have no cards"});
+            return {success: false, message: "You currently have no cards"};
+        }
+
+        res.status(201).json({success: true, message: "Successfully retrieved my cards", data: cards});
+        return {success: true, message: "Successfully retrieved my cards", data: cards};
+    }catch (err){
+        res.status(500).json({success: false, message: err.message});
+        console.log(err.message);
+    }
+}
+
+exports.updateCard = async (req, res) => {
+    try{
+        const user = req.user;
+        const {card_id, new_message, status} = req.body;
+        const card = await Card.findById(card_id);
+        card.message = new_message;
+        card.status = status;
+        await card.save();
+        res.status(201).json({success: true, message: "Successfully updated the card", data: card});
+        return {success: true, data: card};
+    }catch (err){
+        res.status(500).json({success: false, message: err.message});
     }
 }
 
@@ -35,7 +68,7 @@ exports.deleteCard = async (req, res) => {
         const card_id = req.body;
         const card = await Card.findById(card_id);
         await Card.findByIdAndDelete(card_id);
-        res.status(201).json({success: true, data: card})
+        res.status(201).json({success: true, message: "Successfully deleted the card", data: card})
     }catch (err){
         res.status(500).json({success: false, message: err.message});
     }
@@ -44,9 +77,10 @@ exports.deleteCard = async (req, res) => {
 exports.getCards = async (req, res) => {
     try{
         const cards = Card.find();
-        res.status(201).json({succes: true, cards: cards});
-        return res.json({success: true, cards: cards});
+        res.status(201).json({succes: true, message: "Successfully retrieved all cards", cards: cards});
+        return {success: true, cards: cards};
     }catch (err){
         res.status(500).json({success: false, message: err.message});
     }
 }
+
