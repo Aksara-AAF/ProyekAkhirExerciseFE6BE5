@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const CardSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
 
     title: {
@@ -26,7 +25,7 @@ const CardSchema = new mongoose.Schema({
     expiresIn: {
         type: Number,
         required: true,
-        default: 30000
+        default: 60000
     }
 });
 

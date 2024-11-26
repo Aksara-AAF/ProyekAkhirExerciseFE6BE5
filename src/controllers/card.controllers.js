@@ -5,12 +5,21 @@ exports.postCard = async (req, res) => {
         const user_id = req.user;
         const userr = await User.findById(user_id.id);
         const {title, message, time_limit} = req.body;
-        const new_card = await new Card({username: userr.username, title: title, permintaan: message});
+        const new_card = await new Card({username: userr.username, permintaan: message, title: title});
         await new_card.save();
-        console.log(new_card);
+        let time = new_card.expiresIn;
+        if (time_limit){
+            time = time_limit;
+        }
+
+        setTimeout(async () => {
+            await Card.findByIdAndDelete(new_card.id);
+        }, time);
+
         res.status(201).json({success: true, data: new_card});
         return {success: true, data: new_card};
     }catch (error){
+        console.log(error.message);
         res.status(500).json({success: false, message: error.message});
     }
 }
