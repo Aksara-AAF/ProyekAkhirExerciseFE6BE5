@@ -25,22 +25,4 @@ app.post('/card/post', async (req, res) => {
     res.send("hello");
 })
 
-// app.post('/user/register', async (req, res) => {
-//     try{
-//         const {username, password, npm, contact} = req.body;
-//         const hashed = await bcrypt.hash(valPass, 10);
-//         const user = await User.findOne({username: valUser});
-//         if (user != null){
-//             res.status(201).json({success: false, message: "Username is already used"});
-//         }else{
-//             const new_user = await new User({username: username, password: password, npm: npm, contact: contact});
-//             await new_user.save();
-
-//             res.status(201).json({success: true, message: "Successfully created user", data: new_user});
-//         }
-//     }catch (error){
-//         res.status(500).json({success: false, message: error.message});
-//     }
-// })
-
 app.listen(5001);
