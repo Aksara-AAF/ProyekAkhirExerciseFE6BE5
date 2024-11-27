@@ -21,8 +21,4 @@ app.use(cors({
 app.use('/user', user_router);
 app.use('/card', card_router);
 
-app.post('/card/post', async (req, res) => {
-    res.send("hello");
-})
-
 app.listen(5001);

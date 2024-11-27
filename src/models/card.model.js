@@ -22,6 +22,12 @@ const CardSchema = new mongoose.Schema({
         default: "Available" 
     },
 
+    category: {
+        type: String,
+        required: true,
+        default: "lainnya"
+    },
+
     expiresIn: {
         type: String,
         required: true,

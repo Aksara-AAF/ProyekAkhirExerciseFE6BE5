@@ -4,8 +4,8 @@ exports.postCard = async (req, res) => {
     try{
         const user_id = req.user;
         const userr = await User.findById(user_id.id);
-        const {title, message, time_limit} = req.body;
-        const new_card = await new Card({username: userr.username, permintaan: message, title: title});
+        const {title, message, time_limit, category} = req.body;
+        const new_card = await new Card({username: userr.username, permintaan: message, title: title, category: category});
         await new_card.save();
         let time = new_card.expiresIn;
         if (new_card.expiresIn){
@@ -30,6 +30,24 @@ exports.postCard = async (req, res) => {
     }
 }
 
+exports.getCardsByCategory = async (req, res) => {
+    try{
+        const userr = req.user;
+        const category = req.body;
+        const cards = await Card.find({ category: category });
+        if (cards.length === 0){
+            res.status(201).json({success: false, message: "There are no cards with this category"});
+            return {success: false, message: "There are no cards with this category"};
+        }
+
+        res.status(201).json({success: true, message: "Successfully retrieved the cards", data: cards});
+        return {success: true, message: "Successfully retrieved the cards", data: cards};
+    }catch (err){
+        res.status(500).json({success: false, message: err.message});
+        console.log(err.message);
+    }
+}
+
 exports.getMyCards = async (req, res) => {
     try{
         const userr = req.user;
@@ -51,10 +69,11 @@ exports.getMyCards = async (req, res) => {
 exports.updateCard = async (req, res) => {
     try{
         const user = req.user;
-        const {card_id, new_message, status} = req.body;
+        const {card_id, new_message, status, category} = req.body;
         const card = await Card.findById(card_id);
         card.message = new_message;
         card.status = status;
+        card.category = category;
         await card.save();
         res.status(201).json({success: true, message: "Successfully updated the card", data: card});
         return {success: true, message: "Successfully updated the card", data: card};
