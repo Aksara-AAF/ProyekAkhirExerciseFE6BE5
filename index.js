@@ -18,6 +18,10 @@ app.use(cors({
     credentials: true
 }));
 
+app.get('/', async(req, res) => {
+    res.send("hello");
+})
+
 app.use('/user', user_router);
 app.use('/card', card_router);
 
