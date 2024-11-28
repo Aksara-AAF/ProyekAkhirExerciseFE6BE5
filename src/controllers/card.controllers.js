@@ -79,6 +79,7 @@ exports.updateCard = async (req, res) => {
         return {success: true, message: "Successfully updated the card", data: card};
     }catch (err){
         res.status(500).json({success: false, message: err.message});
+        console.log(err.message);
     }
 }
 
@@ -90,6 +91,7 @@ exports.deleteCard = async (req, res) => {
         res.status(201).json({success: true, message: "Successfully deleted the card", data: card})
     }catch (err){
         res.status(500).json({success: false, message: err.message});
+        console.log(err.message);
     }
 }
 

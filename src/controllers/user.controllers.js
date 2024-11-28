@@ -39,6 +39,7 @@ exports.register = async (req, res) => {
         }
     }catch (error){
         res.status(500).json({success: false, message: error.message});
+        console.log(error.message);
     }
 }
 
@@ -75,6 +76,7 @@ exports.login = async (req, res) => {
     }catch(err){
         res.status(500).json({success: false, message: err.message});
         return {success: false, message: err.message};
+        console.log(err.message);
     }
 }
 
@@ -100,5 +102,6 @@ exports.get_user_info_from_their_card = async (req, res) => {
         return {success: true, message: "Successfully retrieved user info", data: user};
     }catch (err){
         res.status(500).json({success: false, message: err.message});
+        console.log(err.message);
     }
 }
